@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import neo4j.EdgeTypes;
 import neo4j.readWriteDB.Neo4JDBInterface;
+import neo4j.traversals.readWriteDB.Traversals;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -13,7 +13,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 
-import traversals.readWriteDB.Traversals;
+import databaseNodes.EdgeTypes;
 import ddg.DDGCreator;
 import ddg.DataDependenceGraph.DDG;
 import ddg.DataDependenceGraph.DDGDifference;
@@ -28,7 +28,7 @@ public class DDGPatcher
 	public void patchDDG(DefUseCFG defUseCFG, Long funcId)
 	{
 		Node node = Neo4JDBInterface.getNodeById(funcId);
-
+		
 		DDG oldDDG = Traversals.getDDGForFunction(node);
 		DDGCreator ddgCreator = new DDGCreator();
 		DDG newDDG = ddgCreator.createForDefUseCFG(defUseCFG);
@@ -38,10 +38,8 @@ public class DDGPatcher
 
 	public void writeChangesToDatabase()
 	{
-		Neo4JDBInterface.startTransaction();
 		removeOldEdges(diff);
 		addNewEdges(diff);
-		Neo4JDBInterface.finishTransaction();
 	}
 
 	private void addNewEdges(DDGDifference diff)
@@ -49,7 +47,7 @@ public class DDGPatcher
 		List<DefUseRelation> relsToAdd = diff.getRelsToAdd();
 		for (DefUseRelation rel : relsToAdd)
 		{
-
+			
 			Map<String, Object> properties = new HashMap<String, Object>();
 			properties.put("var", rel.symbol);
 			RelationshipType relType = DynamicRelationshipType

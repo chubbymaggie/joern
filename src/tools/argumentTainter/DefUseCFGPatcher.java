@@ -6,17 +6,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import neo4j.EdgeTypes;
 import neo4j.readWriteDB.Neo4JDBInterface;
+import neo4j.traversals.readWriteDB.Traversals;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 
-import traversals.readWriteDB.Traversals;
 import udg.useDefAnalysis.ASTDefUseAnalyzer;
 import udg.useDefGraph.ReadWriteDbASTProvider;
 import udg.useDefGraph.UseOrDef;
+import databaseNodes.EdgeTypes;
 import ddg.DefUseCFG.DefUseCFG;
 
 public class DefUseCFGPatcher
@@ -55,12 +55,15 @@ public class DefUseCFGPatcher
 	public void patchDefUseCFG(DefUseCFG defUseCFG,
 			Collection<Node> statementsToPatch)
 	{
+		
 		this.defUseCFG = defUseCFG;
 		newlyAddedLinks.clear();
 
 		for (Node statement : statementsToPatch)
 		{
-
+			
+			if(statement == null) continue;
+			
 			long statementId = statement.getId();
 
 			Node node = Traversals.getASTForStatement(statement);
@@ -117,26 +120,30 @@ public class DefUseCFGPatcher
 			return;
 		}
 
-		Neo4JDBInterface.startTransaction();
 		for (DefUseLink link : newlyAddedLinks)
 		{
-
 			Long fromId = link.statement;
 			Long toId = (Long) defUseCFG.getIdForSymbol(link.symbol);
 
 			if (toId == null)
 			{
-				System.err
-						.println("Warning: Trying to create DEF-link to unknown symbol: "
-								+ link.symbol);
-				break;
+				Map<String, Object> properties = new HashMap<String, Object>();
+				Node statementNode = Neo4JDBInterface.getNodeById(link.statement);
+				
+				properties.put("functionId", statementNode.getProperty("functionId"));
+				properties.put("type", "Symbol");
+				properties.put("code", link.symbol);
+				
+				Node symbolNode = Neo4JDBInterface.addNode(properties);
+				toId = (Long) symbolNode.getId();
 			}
 
 			RelationshipType relType = DynamicRelationshipType
 					.withName(EdgeTypes.DEF);
 			Neo4JDBInterface.addRelationship(fromId, toId, relType, null);
 		}
-		Neo4JDBInterface.finishTransaction();
+		
+		
 	}
 
 }

@@ -2,13 +2,17 @@ package tools.index;
 
 import java.nio.file.Path;
 
-import neo4j.importers.DirectoryTreeImporter;
+import outputModules.neo4j.importers.DirectoryTreeImporter;
 import parsing.ModuleParser;
+import parsing.C.Modules.ANTLRCModuleParserDriver;
+import fileWalker.SourceFileListener;
+
 
 public abstract class Indexer extends SourceFileListener
 {
 
-	ModuleParser parser = new ModuleParser();
+	ANTLRCModuleParserDriver driver = new ANTLRCModuleParserDriver();
+	ModuleParser parser = new ModuleParser(driver);
 
 	protected IndexerState state;
 	protected IndexerASTWalker astWalker;
@@ -16,7 +20,6 @@ public abstract class Indexer extends SourceFileListener
 
 	protected String outputDir;
 
-	protected abstract void initializeIndexerState();
 
 	protected abstract void initializeDirectoryImporter();
 
@@ -26,14 +29,16 @@ public abstract class Indexer extends SourceFileListener
 
 	protected abstract void shutdownDatabase();
 
-	// Configuration routines called before initialize
 
+	protected void initializeIndexerState()
+	{
+		state = new IndexerState(this);
+	}
+	
 	public void setOutputDir(String anOutputDir)
 	{
 		outputDir = anOutputDir;
 	}
-
-	// ////////////////
 
 	@Override
 	public void initialize()

@@ -4,14 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import misc.Pair;
-import neo4j.EdgeTypes;
-import neo4j.nodes.NodeKeys;
 import neo4j.readWriteDB.Neo4JDBInterface;
+import neo4j.traversals.readWriteDB.Traversals;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
-import traversals.readWriteDB.Traversals;
+import databaseNodes.EdgeTypes;
+import databaseNodes.NodeKeys;
 
 public class ReadWriteDBProvider extends DBProvider
 {

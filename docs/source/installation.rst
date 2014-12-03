@@ -39,11 +39,15 @@ software should be installed:
   not build with Java 6. It has been tested with OpenJDK-7 but should
   also work fine with Oracle's JVM.
   
-- **Neo4J 1.9.8 Community Edition.**  The graph database `Neo4J
-  <http://www.neo4j.org/download/other_versions>`_ provides access to 
-  the imported code. Note, that Joern *will not work with the 2.0
-  branch of Neo4J*.
+- **Neo4J 2.1.5 Community Edition.**  The graph database `Neo4J
+  <http://www.neo4j.org/download/>`_ provides access to 
+  the imported code.
 
+- **Gremlin for Neo4J 2.X.** The `Gremlin plugion for Neo4J 2.X
+  <https://github.com/neo4j-contrib/gremlin-plugin>`_ allows
+  traversals written in the programming language Gremlin to be run on
+  the Neo4J database.
+	  
 **Build Dependencies.** A tarball containing all necessary
 build-dependencies is available for download `here
 <http://mlsec.org/joern/lib/lib.tar.gz>`_ . This contains files from
@@ -53,8 +57,8 @@ the following projects.
 * `The ANTLRv4 Parser Generator <http://www.antlr.org/>`_ 
 * `Apache Commons CLI Command Line Parser 1.2
   <http://commons.apache.org/proper/commons-cli/>`_
-* `Neo4J 1.9.8 Community Edition
-  <http://neo4j.com/artifact.php?name=neo4j-community-1.9.8-unix.tar.gz>`_
+* `Neo4J 2.1.5 Community Edition
+  <http://www.neo4j.org/download/other_versions>`_
 
 * `The Apache Ant build tool <http://ant.apache.org/>`_ (tested with
   version 1.9.2).
@@ -71,20 +75,20 @@ http://mlsec.org/joern/download.shtml. This will create the directory
 
 .. code-block:: none
 
-	wget https://github.com/fabsx00/joern/archive/0.2.5.tar.gz
-	tar xfzv 0.2.5.tar.gz
+	wget https://github.com/fabsx00/joern/archive/0.3.1.tar.gz
+	tar xfzv 0.3.1.tar.gz
 
-Change to the directory ``joern-0.2.5/``. Next, download build dependencies
+Change to the directory ``joern-0.3.1/``. Next, download build dependencies
 at http://mlsec.org/joern/lib/lib.tar.gz and extract the tarball.
 
 .. code-block:: none
 
-	cd joern-0.2.5
+	cd joern-0.3.1
 	wget http://mlsec.org/joern/lib/lib.tar.gz
 	tar xfzv lib.tar.gz
 
 The JAR-files necessary to build joern should now be located in
-``joern-0.2.5/lib/``.
+``joern-0.3.1/lib/``.
 
 **Note**: If you want to build the development version, you need
 to download the build dependencies from
@@ -97,7 +101,7 @@ Build the project using ``ant`` by issuing the following command.
 	ant
 
 Create symlinks (optional). The executable JAR file will be located in
-``joern-0.2.5/bin/joern.jar``. Simply place this JAR file somewhere on your
+``joern-0.3.1/bin/joern.jar``. Simply place this JAR file somewhere on your
 disk and you are done. If you are using bash, you can optionally
 create the following alias in your ``.bashrc``:
 
@@ -123,14 +127,49 @@ python and the shell, it is also highly recommended to install
 ``python-joern`` and ``joern-tools`` as outlined in the following
 sections.
 
+Installing the Neo4J Server
+----------------------------
+
+It is possible to access the graph database directly from your scripts
+by loading the database into memory on script startup. However, it is
+highly recommended to access data via the Neo4J server instead. The
+advantage of doing so is that the data is loaded only once for all
+scripts you may want to execute allowing you to benefit from Neo4J's
+caching for increased speed.
+
+To install the neo4j server, download version 2.1.5 from
+http://www.neo4j.org/download/.
+
+Once downloaded, unpack the archive into a directory of your choice,
+which we will call ``$Neo4jDir`` in the following. 
+
+Since Neo4J 2.0, the Gremlin plugin is no longer included by default,
+and hence, it needs to be installed separately. To do so, you can
+follow the instructions at
+
+https://github.com/neo4j-contrib/gremlin-plugin
+
+to build and install the plugin. Alternatively, you can find a
+pre-built version here:
+
+http://mlsec.org/joern/lib/neo4j-gremlin-plugin-2.1-SNAPSHOT-server-plugin.zip
+
+The plugin can be installed by issuing the following command:
+
+.. code-block:: none
+
+		unzip neo4j-gremlin-plugin-2.1-SNAPSHOT-server-plugin.zip -d $Neo4jDir/plugins/gremlin-plugin
+
+where, $Neo4JDir is the directory you installed Neo4J in.
+
+
 Installing python-joern
 ------------------------
 
 ``python-joern`` is a thin python access layer for joern and a set of
 utility traversals. It depends on the following python modules:
 
-- py2neo 1.6.1 (http://book.py2neo.org/en/latest/)
-- py2neo-gremlin (https://github.com/fabsx00/py2neo-gremlin/)
+- py2neo 2.0 (http://py2neo.org/)
 
 To install ``python-joern``, first make sure python setuptools are
 correctly installed. On Debian/Ubuntu, issuing the following command
@@ -146,9 +185,9 @@ follows:
 
 .. code-block:: none
 
-	wget https://github.com/fabsx00/python-joern/archive/0.2.5.tar.gz
-	tar xfzv 0.2.5.tar.gz
-	cd python-joern-0.2.5
+	wget https://github.com/fabsx00/python-joern/archive/0.3.1.tar.gz
+	tar xfzv 0.3.1.tar.gz
+	cd python-joern-0.3.1
 	sudo python2 setup.py install
 
 
@@ -180,3 +219,4 @@ python-setuptools as follows:
 
 After installation, type ``joern-lookup`` to verify correct
 installation.
+

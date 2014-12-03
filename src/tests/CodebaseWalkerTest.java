@@ -7,7 +7,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import tools.index.SourceFileWalker;
+import fileWalker.SourceFileWalker;
+import fileWalker.UnorderedWalker;
 
 public class CodebaseWalkerTest
 {
@@ -17,7 +18,7 @@ public class CodebaseWalkerTest
 	{
 		String[] args = { "src/tests/samples/" };
 
-		SourceFileWalker provider = new SourceFileWalker();
+		SourceFileWalker provider = new UnorderedWalker();
 
 		try
 		{

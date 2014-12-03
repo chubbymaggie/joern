@@ -1,15 +1,19 @@
 package ddg;
 
+
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import ast.ASTNode;
 import misc.MultiHashMap;
 import udg.useDefGraph.UseDefGraph;
 import udg.useDefGraph.UseOrDefRecord;
 import cfg.CFG;
 import cfg.CFGEdge;
 import cfg.nodes.ASTNodeContainer;
+import cfg.nodes.CFGNode;
 import ddg.DefUseCFG.DefUseCFG;
 
 public class CFGAndUDGToDefUseCFG
@@ -21,6 +25,19 @@ public class CFGAndUDGToDefUseCFG
 
 		initializeStatements(cfg, defUseCFG);
 		initializeDefUses(udg, defUseCFG);
+		
+		LinkedList<String> parameters = new LinkedList<String>();
+		for (CFGNode parameterCFGNode : cfg.getParameters())
+		{
+			ASTNode astNode = ((ASTNodeContainer) parameterCFGNode).getASTNode();
+			String symbol = astNode.getChild(1).getEscapedCodeStr();
+			parameters.add(symbol);
+		}
+		
+		defUseCFG.setExitNode(cfg.getExitNode());
+		defUseCFG.setParameters(parameters);
+		
+		defUseCFG.addUsesForExitNode();
 		initializeParentsAndChildren(cfg, defUseCFG);
 
 		return defUseCFG;
@@ -51,13 +68,13 @@ public class CFGAndUDGToDefUseCFG
 			for (UseOrDefRecord record : defUseRecords)
 			{
 
-				if (!record.astNode.isInCFG())
+				if (!record.getAstNode().isInCFG())
 					continue;
 
-				if (record.isDef)
-					defUseCFG.addSymbolDefined(record.astNode, symbol);
+				if (record.isDef())
+					defUseCFG.addSymbolDefined(record.getAstNode(), symbol);
 				else
-					defUseCFG.addSymbolUsed(record.astNode, symbol);
+					defUseCFG.addSymbolUsed(record.getAstNode(), symbol);
 			}
 
 		}

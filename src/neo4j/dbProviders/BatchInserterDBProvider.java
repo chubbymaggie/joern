@@ -4,12 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import misc.Pair;
-import neo4j.nodes.NodeKeys;
+import neo4j.traversals.batchInserter.AST;
+import neo4j.traversals.batchInserter.Elementary;
 
 import org.neo4j.unsafe.batchinsert.BatchRelationship;
 
-import traversals.batchInserter.AST;
-import traversals.batchInserter.Elementary;
+import databaseNodes.NodeKeys;
 
 public class BatchInserterDBProvider extends DBProvider
 {

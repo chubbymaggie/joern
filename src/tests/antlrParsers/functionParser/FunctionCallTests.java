@@ -5,16 +5,16 @@ import static org.junit.Assert.assertTrue;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-import parsing.ANTLRFunctionParserDriver;
+import parsing.FunctionParser;
 
-public class FunctionCallTests
+public class FunctionCallTests extends FunctionParserTestBase
 {
 
 	@Test
 	public void testFunctionCall()
 	{
 		String input = "foo(x);";
-		ANTLRFunctionParserDriver functionParser = new ANTLRFunctionParserDriver();
+		FunctionParser functionParser = createFunctionParser();
 		ParseTree tree = functionParser.parseString(input);
 		String output = tree.toStringTree(functionParser.getAntlrParser());
 		assertTrue(output.contains("function_argument_list"));
@@ -24,7 +24,7 @@ public class FunctionCallTests
 	public void testTwoParameters()
 	{
 		String input = "foo(x,y);";
-		ANTLRFunctionParserDriver functionParser = new ANTLRFunctionParserDriver();
+		FunctionParser functionParser = createFunctionParser();
 		ParseTree tree = functionParser.parseString(input);
 		String output = tree.toStringTree(functionParser.getAntlrParser());
 		assertTrue(output.contains(", (function_argument"));
@@ -34,7 +34,7 @@ public class FunctionCallTests
 	public void testCallViaPtr()
 	{
 		String input = "ptr->foo(x);";
-		ANTLRFunctionParserDriver functionParser = new ANTLRFunctionParserDriver();
+		FunctionParser functionParser = createFunctionParser();
 		ParseTree tree = functionParser.parseString(input);
 		String output = tree.toStringTree(functionParser.getAntlrParser());
 		assertTrue(output.contains("function_argument_list"));
@@ -44,7 +44,7 @@ public class FunctionCallTests
 	public void testCallWithExprInArg()
 	{
 		String input = "foo(x == 1, x++);";
-		ANTLRFunctionParserDriver functionParser = new ANTLRFunctionParserDriver();
+		FunctionParser functionParser = createFunctionParser();
 		ParseTree tree = functionParser.parseString(input);
 		String output = tree.toStringTree(functionParser.getAntlrParser());
 		assertTrue(output.contains("function_argument_list"));

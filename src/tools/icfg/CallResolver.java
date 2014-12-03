@@ -1,13 +1,13 @@
 package tools.icfg;
 
-import neo4j.EdgeTypes;
 import neo4j.batchInserter.Neo4JBatchInserter;
-import neo4j.nodes.NodeKeys;
+import neo4j.traversals.batchInserter.Elementary;
 
 import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.unsafe.batchinsert.BatchRelationship;
 
-import traversals.batchInserter.Elementary;
+import databaseNodes.EdgeTypes;
+import databaseNodes.NodeKeys;
 
 public class CallResolver
 {
