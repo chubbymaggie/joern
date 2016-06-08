@@ -1,5 +1,6 @@
 package tests.parseTreeToAST;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -196,20 +197,5 @@ public class CodeNestingTest
 		assertTrue(expr.getTarget().getEscapedCodeStr().equals("foo"));
 	}
 
-	@Test
-	public void testClassContent()
-	{
-		// TODO: implement content-parsing for classes defined inside functions
-		String input = "struct foo{ int x; } foo;";
-		CompoundStatement contentItem = (CompoundStatement) FunctionContentTestUtil
-				.parseAndWalk(input);
-		assertTrue(contentItem.getChildCount() == 1);
-		ClassDefStatement classDef = (ClassDefStatement) contentItem
-				.getChild(0);
-		assertTrue(classDef.content.getChildCount() == 1);
-		IdentifierDeclStatement declStmt = (IdentifierDeclStatement) classDef.content
-				.getChild(0);
-		assertTrue(declStmt.getChildCount() == 1);
-	}
 
 }

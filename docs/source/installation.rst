@@ -5,7 +5,7 @@ Joern currently consists of the following components:
 
 - `joern(-core) <https://github.com/fabsx00/joern/>`_ parses source
   code using a robust parser, creates code property graphs and
-  finally, imports these graphs into a Neo4j graph database. 
+  finally, imports these graphs into a Neo4j graph database.
 
 - `python-joern <https://github.com/fabsx00/python-joern/>`_ is a
   (minimal) python interface to the Joern database. It offers a
@@ -15,7 +15,7 @@ Joern currently consists of the following components:
 
 - `joern-tools <https://github.com/fabsx00/joern-tools/>`_ is a
   collection of command line tools employing python-joern to allow
-  simple analysis tasks to be performed directly on the shell. 
+  simple analysis tasks to be performed directly on the shell.
 
 Both python-joern and joern-tools are optional, however, installing
 python-joern is highly recommended for easy access to the
@@ -38,27 +38,27 @@ software should be installed:
 - **A Java Virtual Machine 1.7.** Joern is written in Java 7 and does
   not build with Java 6. It has been tested with OpenJDK-7 but should
   also work fine with Oracle's JVM.
-  
-- **Neo4J 2.1.5 Community Edition.**  The graph database `Neo4J
-  <http://www.neo4j.org/download/>`_ provides access to 
+
+- **Neo4J 2.1.X Community Edition.**  The graph database `Neo4J
+  <http://www.neo4j.com/>`_ provides access to
   the imported code.
 
 - **Gremlin for Neo4J 2.X.** The `Gremlin plugion for Neo4J 2.X
   <https://github.com/neo4j-contrib/gremlin-plugin>`_ allows
   traversals written in the programming language Gremlin to be run on
   the Neo4J database.
-	  
+
 **Build Dependencies.** A tarball containing all necessary
 build-dependencies is available for download `here
 <http://mlsec.org/joern/lib/lib.tar.gz>`_ . This contains files from
 the following projects.
 
 
-* `The ANTLRv4 Parser Generator <http://www.antlr.org/>`_ 
+* `The ANTLRv4 Parser Generator <http://www.antlr.org/>`_
 * `Apache Commons CLI Command Line Parser 1.2
   <http://commons.apache.org/proper/commons-cli/>`_
-* `Neo4J 2.1.5 Community Edition
-  <http://www.neo4j.org/download/other_versions>`_
+* `Neo4J 2.1.X Community Edition
+  <http://www.neo4j.com/download/other-releases>`_
 
 * `The Apache Ant build tool <http://ant.apache.org/>`_ (tested with
   version 1.9.2).
@@ -90,10 +90,6 @@ at http://mlsec.org/joern/lib/lib.tar.gz and extract the tarball.
 The JAR-files necessary to build joern should now be located in
 ``joern-0.3.1/lib/``.
 
-**Note**: If you want to build the development version, you need
-to download the build dependencies from
-http://mlsec.org/joern/lib/lib-dev.tar.gz .
-
 Build the project using ``ant`` by issuing the following command.
 
 .. code-block:: none
@@ -118,7 +114,7 @@ Build additional tools (optional). Tools such as the
 `argumentTainter` can be built by issuing the following command.
 
 .. code-block:: none
-	
+
 	ant tools
 
 Upon successfully building the code, you can start importing C/C++
@@ -137,11 +133,11 @@ advantage of doing so is that the data is loaded only once for all
 scripts you may want to execute allowing you to benefit from Neo4J's
 caching for increased speed.
 
-To install the neo4j server, download version 2.1.5 from
-http://www.neo4j.org/download/.
+To install the neo4j server, download version 2.1.8 from
+http://www.neo4j.com/download/other-releases.
 
 Once downloaded, unpack the archive into a directory of your choice,
-which we will call ``$Neo4jDir`` in the following. 
+which we will call ``$Neo4jDir`` in the following.
 
 Since Neo4J 2.0, the Gremlin plugin is no longer included by default,
 and hence, it needs to be installed separately. To do so, you can
@@ -169,15 +165,15 @@ Installing python-joern
 ``python-joern`` is a thin python access layer for joern and a set of
 utility traversals. It depends on the following python modules:
 
-- py2neo 2.0 (http://py2neo.org/)
+- py2neo 2.0 (https://github.com/nigelsmall/py2neo/releases/tag/py2neo-2.0)
 
 To install ``python-joern``, first make sure python setuptools are
 correctly installed. On Debian/Ubuntu, issuing the following command
 on the shell should be sufficient.
 
 .. code-block:: none
-	
-	sudo apt-get install python-setuptools python-dev	
+
+	sudo apt-get install python-setuptools python-dev
 
 
 ``python-joern`` and all its dependencies can then be installed as
@@ -212,11 +208,10 @@ Just like ``python-joern``, ``joern-tools`` is installed using
 python-setuptools as follows:
 
 .. code-block:: none
-	
+
 	git clone https://github.com/fabsx00/joern-tools
 	cd joern-tools
 	sudo python2 setup.py install
 
 After installation, type ``joern-lookup`` to verify correct
 installation.
-
