@@ -108,7 +108,5 @@ WHITESPACE  :   [ \r\t\u000C\n]+ -> skip
 CPPCOMMENT
     : '//' ~[\r\n]* '\r'? '\n' -> skip
     ;
-    
-ELLIPSIS : '...';
 
 OTHER : . -> skip ;

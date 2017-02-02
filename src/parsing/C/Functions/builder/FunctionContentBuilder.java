@@ -16,7 +16,6 @@ import antlr.C.FunctionParser.Block_starterContext;
 import antlr.C.FunctionParser.BreakStatementContext;
 import antlr.C.FunctionParser.Cast_expressionContext;
 import antlr.C.FunctionParser.Cast_targetContext;
-import antlr.C.FunctionParser.Catch_statementContext;
 import antlr.C.FunctionParser.Closing_curlyContext;
 import antlr.C.FunctionParser.ConditionContext;
 import antlr.C.FunctionParser.Conditional_expressionContext;
@@ -60,8 +59,6 @@ import antlr.C.FunctionParser.Sizeof_operandContext;
 import antlr.C.FunctionParser.StatementContext;
 import antlr.C.FunctionParser.StatementsContext;
 import antlr.C.FunctionParser.Switch_statementContext;
-import antlr.C.FunctionParser.ThrowStatementContext;
-import antlr.C.FunctionParser.Try_statementContext;
 import antlr.C.FunctionParser.Type_nameContext;
 import antlr.C.FunctionParser.Unary_expressionContext;
 import antlr.C.FunctionParser.Unary_op_and_cast_exprContext;
@@ -107,7 +104,6 @@ import ast.expressions.UnaryOperator;
 import ast.statements.BlockCloser;
 import ast.statements.BlockStarter;
 import ast.statements.BreakStatement;
-import ast.statements.CatchStatement;
 import ast.statements.CompoundStatement;
 import ast.statements.Condition;
 import ast.statements.ContinueStatement;
@@ -123,8 +119,6 @@ import ast.statements.Label;
 import ast.statements.ReturnStatement;
 import ast.statements.Statement;
 import ast.statements.SwitchStatement;
-import ast.statements.ThrowStatement;
-import ast.statements.TryStatement;
 import ast.statements.WhileStatement;
 
 /**
@@ -545,7 +539,7 @@ public class FunctionContentBuilder extends ASTNodeBuilder
 		// This is also a bit of a hack. As we go up,
 		// we introduce an artificial assignment-node.
 
-		assign.addChild(identifierDecl.getName().clone());
+		assign.addChild(identifierDecl.getName());
 		assign.addChild(lastChild);
 
 		identifierDecl.addChild(assign);
@@ -841,21 +835,6 @@ public class FunctionContentBuilder extends ASTNodeBuilder
 	public void exitUnaryOperator(Unary_operatorContext ctx)
 	{
 		nesting.consolidateSubExpression(ctx);
-	}
-
-	public void enterTryStatement(Try_statementContext ctx)
-	{
-		replaceTopOfStack(new TryStatement());
-	}
-
-	public void enterCatchStatement(Catch_statementContext ctx)
-	{
-		replaceTopOfStack(new CatchStatement());
-	}
-
-	public void enterThrowStatement(ThrowStatementContext ctx)
-	{
-		replaceTopOfStack(new ThrowStatement());
 	}
 
 }

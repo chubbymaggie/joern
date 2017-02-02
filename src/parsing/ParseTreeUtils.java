@@ -6,6 +6,7 @@ public class ParseTreeUtils
 {
 	public static String childTokenString(ParseTree ctx)
 	{
+		// TODO: Optimize this. Strings are immutable
 
 		// The reason we don't just call ctx.getText()
 		// here is because it removes whitespace, making
@@ -21,7 +22,7 @@ public class ParseTreeUtils
 			return ctx.getText();
 		}
 
-		StringBuilder retval = new StringBuilder();
+		String retval = "";
 
 		for (int i = 0; i < nChildren; i++)
 		{
@@ -29,12 +30,12 @@ public class ParseTreeUtils
 			String childText = childTokenString(child);
 			if (!childText.equals(""))
 			{
-				retval.append(childText).append(" ");
+				retval += childText + " ";
 			}
 		}
 
 		if (retval.length() > 0)
-			return retval.substring(0, retval.length() - 1);
-		return retval.toString();
+			retval = retval.substring(0, retval.length() - 1);
+		return retval;
 	}
 }

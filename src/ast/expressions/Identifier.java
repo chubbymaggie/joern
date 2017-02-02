@@ -16,17 +16,4 @@ public class Identifier extends Expression
 	{
 		visitor.visit(this);
 	}
-	
-	public Identifier clone()
-	{
-		Identifier node = null;
-		try{
-			node = (Identifier)super.clone();
-		}
-		catch(CloneNotSupportedException e)
-		{
-			e.printStackTrace();
-		}
-		return node;
-	}
 }

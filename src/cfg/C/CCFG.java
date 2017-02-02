@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cfg.CFG;
-import cfg.CFGEdge;
 import cfg.nodes.CFGNode;
-import cfg.nodes.CFGExceptionNode;
 
 public class CCFG extends CFG
 {
@@ -16,7 +14,6 @@ public class CCFG extends CFG
 	private List<CFGNode> returnStatements;
 	private HashMap<CFGNode, String> gotoStatements;
 	private HashMap<String, CFGNode> labels;
-	private CFGExceptionNode exceptionNode;
 
 	public CCFG()
 	{
@@ -26,12 +23,6 @@ public class CCFG extends CFG
 		setReturnStatements(new LinkedList<CFGNode>());
 		setGotoStatements(new HashMap<CFGNode, String>());
 		setLabels(new HashMap<String, CFGNode>());
-	}
-
-	public void setExceptionNode(CFGExceptionNode node)
-	{
-		this.exceptionNode = node;
-		addVertex(node);
 	}
 
 	public List<CFGNode> getBreakStatements()
@@ -49,10 +40,12 @@ public class CCFG extends CFG
 		return continueStatements;
 	}
 
+
 	public void setContinueStatements(List<CFGNode> continueStatements)
 	{
 		this.continueStatements = continueStatements;
 	}
+
 
 	public HashMap<String, CFGNode> getLabels()
 	{
@@ -64,26 +57,30 @@ public class CCFG extends CFG
 		this.labels = labels;
 	}
 
+
 	public HashMap<CFGNode, String> getGotoStatements()
 	{
 		return gotoStatements;
 	}
+
 
 	public void setGotoStatements(HashMap<CFGNode, String> gotoStatements)
 	{
 		this.gotoStatements = gotoStatements;
 	}
 
+
 	public List<CFGNode> getReturnStatements()
 	{
 		return returnStatements;
 	}
 
+
 	public void setReturnStatements(List<CFGNode> returnStatements)
 	{
 		this.returnStatements = returnStatements;
 	}
-
+	
 	public void addBlockLabel(String label, CFGNode block)
 	{
 		getLabels().put(label, block);
@@ -124,44 +121,16 @@ public class CCFG extends CFG
 	@Override
 	public void addCFG(CFG o)
 	{
-		super.addCFG(o);
-
-		if (!(o instanceof CCFG))
-			return;
-
 		CCFG otherCFG = (CCFG) o;
-
+		
+		super.addCFG(otherCFG);
+		
 		getParameters().addAll(otherCFG.getParameters());
 		getBreakStatements().addAll(otherCFG.getBreakStatements());
 		getContinueStatements().addAll(otherCFG.getContinueStatements());
 		getReturnStatements().addAll(otherCFG.getReturnStatements());
 		getGotoStatements().putAll(otherCFG.getGotoStatements());
 		getLabels().putAll(otherCFG.getLabels());
-		if (this.hasExceptionNode() && otherCFG.hasExceptionNode())
-		{
-			CFGExceptionNode oldExceptionNode = getExceptionNode();
-			CFGExceptionNode newExceptionNode = new CFGExceptionNode();
-			setExceptionNode(newExceptionNode);
-			addEdge(oldExceptionNode, newExceptionNode,
-					CFGEdge.UNHANDLED_EXCEPT_LABEL);
-			addEdge(otherCFG.getExceptionNode(), newExceptionNode,
-					CFGEdge.UNHANDLED_EXCEPT_LABEL);
-		}
-		else if (otherCFG.hasExceptionNode())
-		{
-			setExceptionNode(otherCFG.getExceptionNode());
-		}
-
 	}
-
-	public CFGExceptionNode getExceptionNode()
-	{
-		return this.exceptionNode;
-	}
-
-	public boolean hasExceptionNode()
-	{
-		return this.exceptionNode != null;
-	}
-
+	
 }

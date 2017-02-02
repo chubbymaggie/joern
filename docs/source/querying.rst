@@ -53,7 +53,7 @@ the unique node id as in the following query:
 	g.v(nodeId)
 
 Walking the graph can now be achieved by attaching so called
-*Gremlin steps* to the start node. Each of these steps processes
+\emph{Gremlin steps} to the start node. Each of these steps processes
 all nodes returned by the previous step, similar to the way Unix
 pipelines connect shell programs. While learning Gremlin, it can thus
 be a good idea to think of the dot-operator as an alias for the unix
@@ -106,12 +106,12 @@ index can be queried using Apache Lucene queries (see `Lucene Query
 Language
 <http://lucene.apache.org/core/2_9_4/queryparsersyntax.html>`_ for
 details on the syntax). For example, to retrieve all AST nodes
-representing callees with a name containing the substring `cpy`,
+representing callees with a name containing the substring \code{cpy},
 one may issue the following query:
 
 .. code-block:: none
 
-	queryNodeIndex("type:Callee AND code:*cpy*")
+	queryNodeIndex("type:Callee AND name:*cpy*") \end{verbatim}
 
 The Gremlin step ``queryNodeIndex`` is defined in
 ``joernsteps/lookup.groovy`` of ``python-joern``. In addition to
@@ -193,7 +193,7 @@ AND a call to ``bar``, lookup functions can simply be chained, e.g.,
 	getCallsTo('foo').getCallsTo('bar')
 
 returns functions calling both ``foo`` and ``bar``. Similarly,
-functions calling `foo` OR `bar` can be selected as follows:
+functions calling \code{foo} OR \code{bar} can be selected as follows:
 
 .. code-block:: none
 
@@ -280,11 +280,12 @@ you want to find all functions where a third argument to ``memcpy``
 is named ``len`` and is passed as a parameter to the function and a
 control flow path exists satisfying the following two conditions:
 
-
-* The variable ``len`` is not re-defined on the way.
-* The variable is not used inside a relational or equality expression
-  on the way, i.e., its numerical value is not ``checked'' against
-  some other variable.
+\begin{itemize}
+\item The variable \code{len} is not re-defined on the way.
+\item The variable is not used inside a relational or equality
+expression on the way, i.e., its numerical value is not
+``checked'' against some other variable.
+\end{itemize}
 
 You can use the following traversal to achieve this:
 
@@ -292,13 +293,14 @@ You can use the following traversal to achieve this:
 
 	getArguments('memcpy', '2')
 	.sideEffect{ paramName = '.*len.*' }
-	.unsanitized({ it, s -> it.isCheck(paramName) })
-	.match{ it.type == "Parameter" && it.code.matches(paramName) }.code
+	.filter{ it.code.matches(paramName) }
+	.unsanitized{ it.isCheck( paramName ) }
+	.params( paramName )
 
 where ``isCheck`` is a traversal defined in ``joerntools/misc.groovy``
 to check if a symbol occurs inside an equality or relational
-expression and `match` looks for nodes matches the closure passed
-to it in the given syntax tree.
+expression and \code{params} traverses to parameters matching its
+first parameter.
 
 Note, that in the above example, we are using a regular expression to
 determine arguments containing the sub-string ``len`` and that one may

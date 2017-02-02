@@ -5,7 +5,6 @@ import java.util.Stack;
 import ast.ASTNode;
 import ast.statements.DoStatement;
 import ast.statements.IfStatement;
-import ast.statements.TryStatement;
 
 public class ContentBuilderStack
 {
@@ -47,10 +46,5 @@ public class ContentBuilderStack
 	public DoStatement getDo()
 	{
 		return shadowStack.getDo();
-	}
-	
-	public TryStatement getTry()
-	{
-		return shadowStack.getTry();
 	}
 }

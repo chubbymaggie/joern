@@ -3,10 +3,7 @@
 	package antlr.C;
 
 
-  import java.util.Stack;
-
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.NotNull;
+  import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -484,16 +481,6 @@ public interface FunctionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitGotoStatement(@NotNull FunctionParser.GotoStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link FunctionParser#throwStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterThrowStatement(@NotNull FunctionParser.ThrowStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FunctionParser#throwStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitThrowStatement(@NotNull FunctionParser.ThrowStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FunctionParser#no_brackets}.
 	 * @param ctx the parse tree
